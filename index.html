@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="app-ver" content="385">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>보드게임 놀이터</title>
+<link rel="stylesheet" href="style.css?v=385">
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <header class="bar">
+    <span class="brand" id="brand">🎲 보드게임 놀이터</span><span class="sp"></span>
+    <button class="icon" id="btnMute" title="소리 켜기/끄기">🔊</button>
+  </header>
+
+  <section id="home">
+    <div>
+      <h1>보드게임 <span>놀이터</span></h1>
+      <p class="sub">동물 친구들과 머리싸움 · 친구랑 둘이서도. 방을 만들고 코드만 알려 주면 끝.</p>
+    </div>
+    <div class="card">
+      <div class="avarow"><button id="avaBtn" class="avabtn" type="button" title="내 캐릭터 고르기">🐶</button><input id="nick" maxlength="10" placeholder="닉네임"></div>
+      <div id="avaGrid" class="avagrid" hidden></div>
+      <button id="btnHost">방 만들기</button>
+      <div class="row"><input id="codeIn" maxlength="4" placeholder="방 코드" autocomplete="off"><button id="btnJoin">참가</button></div>
+      <button id="btnSolo" class="ghost">혼자 연습 (컴퓨터 · 한 화면)</button>
+      <p id="lobbyMsg"></p>
+    </div>
+    <h2 class="sec">게임 고르기 <small>눌러서 자세히 보기</small></h2>
+    <div id="seasonEntry"></div>
+    <div id="recent" class="recent" hidden></div>
+    <div class="searchbox"><input id="search" type="search" placeholder="🔍 게임 검색 (이름·원작·분류, 초성 ㅅㅈㅇㄱ도 OK)" autocomplete="off"><span id="searchCount"></span></div>
+    <div class="chips" id="searchChips"></div>
+    <div class="cards" id="homeCards"></div>
+  </section>
+
+  <section id="season" hidden></section>
+  <section id="room" hidden>
+    <div class="topline">
+      <span id="roomLabel"></span><span class="code" id="roomCode"></span>
+      <button id="btnCopy" class="ghost small">초대 링크 복사</button>
+      <span id="net"><i></i><span id="netText"></span></span>
+    </div>
+    <div id="verWarn" class="verwarn" hidden></div>
+    <div id="tally" class="tally" hidden></div>
+
+    <div id="menu">
+      <h2>게임 고르기</h2>
+      <p id="menuHint"></p>
+      <div id="levelBox" class="levelbox chips" hidden></div>
+      <div class="searchbox"><input id="menuSearch" type="search" placeholder="🔍 게임 검색" autocomplete="off"><span id="menuSearchCount"></span></div>
+      <div class="chips" id="menuSearchChips"></div>
+      <div class="cards" id="menuCards"></div>
+      <div class="actions"><button id="btnLeave2" class="ghost">나가기</button></div>
+    </div>
+
+    <div id="play" hidden>
+      <div class="gamehead"><b id="gTitle"></b><button id="btnSpeed" class="ghost small" title="진행 속도"></button><button id="btnGuide" class="ghost small">📖 가이드</button></div>
+      <div class="pbar" id="barTop"></div>
+      <div id="stage" hidden><div id="stageCard" class="stage-card"></div></div>
+      <div id="todo" hidden></div>
+      <div id="coach" hidden></div>
+      <div id="area"></div>
+      <div class="pbar" id="barBot"></div>
+      <div id="status"></div>
+      <div id="tip"></div>
+      <div class="emobar" id="emobar">
+        <button data-e="👍">👍</button><button data-e="😂">😂</button><button data-e="😱">😱</button>
+        <button data-e="🤔">🤔</button><button data-e="🔥">🔥</button><button data-e="😭">😭</button>
+        <button id="sayBtn" class="saybtn" title="말 걸기">💬</button>
+      </div>
+      <div id="sayMenu" class="saymenu" hidden>
+        <div class="sayquick">
+          <button data-say="👍 잘했어!">👍 잘했어!</button><button data-say="😅 아 실수…">😅 아 실수…</button><button data-say="⏰ 빨리 둬~">⏰ 빨리 둬~</button>
+          <button data-say="🤔 흠…">🤔 흠…</button><button data-say="🔥 한 판 더?">🔥 한 판 더?</button><button data-say="🙏 봐줘…">🙏 봐줘…</button>
+          <button data-say="😎 각오해!">😎 각오해!</button><button data-say="👋 잘 가요">👋 잘 가요</button>
+        </div>
+        <form id="sayForm" class="row"><input id="sayIn" maxlength="40" placeholder="직접 쓰기 (40자)" autocomplete="off"><button>보내기</button></form>
+      </div>
+      <div class="actions">
+        <button id="btnRematch" hidden>한 판 더</button>
+        <button id="btnMenu" class="ghost">게임 목록</button>
+        <button id="btnLeave" class="ghost">나가기</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<dialog id="gsheet" class="sheet"><button class="sh-x" data-close aria-label="닫기">✕</button><div id="sheetBody"></div></dialog>
+<dialog id="guide">
+  <div id="guideBody"></div>
+  <div class="guidefoot"><button id="guideClose" class="ghost">닫기</button></div>
+</dialog>
+
+<script src="shows.js?v=385"></script>
+<script src="core.js?v=385"></script>
+<script src="ai.js?v=385"></script>
+<script src="npc.js?v=385"></script>
+<script src="games/wall.js?v=385"></script>
+<script src="games/marble.js?v=385"></script>
+<script src="games/gomoku.js?v=385"></script>
+<script src="games/reversi.js?v=385"></script>
+<script src="games/dots.js?v=385"></script>
+<script src="games/mancala.js?v=385"></script>
+<script src="games/drop4.js?v=385"></script>
+<script src="games/ttt9.js?v=385"></script>
+<script src="games/hex.js?v=385"></script>
+<script src="games/checkers.js?v=385"></script>
+<script src="games/fleet.js?v=385"></script>
+<script src="games/nim.js?v=385"></script>
+<script src="games/marbles.js?v=385"></script>
+<script src="games/rps2.js?v=385"></script>
+<script src="games/rps9.js?v=385"></script>
+<script src="games/auction.js?v=385"></script>
+<script src="games/chosung.js?v=385"></script>
+<script src="games/bingo.js?v=385"></script>
+<script src="games/liar.js?v=385"></script>
+<script src="games/thief.js?v=385"></script>
+<script src="games/nothanks.js?v=385"></script>
+<script src="games/expedition.js?v=385"></script>
+<script src="games/flowers.js?v=385"></script>
+<script src="games/stones.js?v=385"></script>
+<script src="games/market.js?v=385"></script>
+<script src="games/cards5.js?v=385"></script>
+<script src="games/threefront.js?v=385"></script>
+<script src="games/pushfive.js?v=385"></script>
+<script src="games/hilo.js?v=385"></script>
+<script src="games/virus.js?v=385"></script>
+<script src="games/rulerace.js?v=385"></script>
+<script src="games/secretnum.js?v=385"></script>
+<script src="games/zoo.js?v=385"></script>
+<script src="games/territory.js?v=385"></script>
+<script src="games/morris.js?v=385"></script>
+<script src="games/hexagon.js?v=385"></script>
+<script src="games/dicepoker.js?v=385"></script>
+<script src="games/cops.js?v=385"></script>
+<script src="games/unknown.js?v=385"></script>
+<script src="games/timeauc.js?v=385"></script>
+<script src="games/halloween.js?v=385"></script>
+<script src="games/sniper.js?v=385"></script>
+<script src="games/treasure.js?v=385"></script>
+<script src="games/tripledice.js?v=385"></script>
+<script src="games/balmancala.js?v=385"></script>
+<script src="games/wallgo.js?v=385"></script>
+<script src="games/doubtbet.js?v=385"></script>
+<script src="games/pyramid.js?v=385"></script>
+<script src="games/bigsmall.js?v=385"></script>
+<script src="games/bagchal.js?v=385"></script>
+<script src="games/qtruth.js?v=385"></script>
+<script src="games/elimvote.js?v=385"></script>
+<script src="games/kingqueen.js?v=385"></script>
+<script src="games/firstcome.js?v=385"></script>
+<script src="games/junglemaze.js?v=385"></script>
+<script src="games/ascend.js?v=385"></script>
+<script src="games/colorturn.js?v=385"></script>
+<script src="games/numchange.js?v=385"></script>
+<script src="games/secretdice.js?v=385"></script>
+<script src="games/exproad.js?v=385"></script>
+<script src="games/mysterynum.js?v=385"></script>
+<script src="games/realtime.js?v=385"></script>
+<script src="games/mazecode.js?v=385"></script>
+<script src="games/daynight.js?v=385"></script>
+<script src="games/patternblock.js?v=385"></script>
+<script src="games/maincolor.js?v=385"></script>
+<script src="games/realauction.js?v=385"></script>
+<script src="games/battleasc.js?v=385"></script>
+<script src="games/hiddenmission.js?v=385"></script>
+<script src="games/switchpoker.js?v=385"></script>
+<script src="games/mysterytime.js?v=385"></script>
+<script src="games/balancematch.js?v=385"></script>
+<script src="games/predictwin.js?v=385"></script>
+<script src="games/brickbuild.js?v=385"></script>
+<script src="games/formulalink.js?v=385"></script>
+<script src="games/blindbet.js?v=385"></script>
+<script src="games/sevennote.js?v=385"></script>
+<script src="games/hiddencode.js?v=385"></script>
+<script src="games/crimmemory.js?v=385"></script>
+<script src="games/summaze.js?v=385"></script>
+<script src="games/tri13.js?v=385"></script>
+<script src="games/memory30.js?v=385"></script>
+<script src="games/goodevil.js?v=385"></script>
+<script src="games/goodevilai.js?v=385"></script>
+<script src="games/genius.js?v=385"></script>
+<script src="games/blackvillage.js?v=385"></script>
+<script src="games/artauction.js?v=385"></script>
+<script src="games/mixmatch.js?v=385"></script>
+<script src="games/fruitshop.js?v=385"></script>
+<script src="games/blackwhite2.js?v=385"></script>
+<script src="games/jury.js?v=385"></script>
+<script src="games/betrps.js?v=385"></script>
+<script src="games/midrace.js?v=385"></script>
+<script src="games/swordshield.js?v=385"></script>
+<script src="games/duoface.js?v=385"></script>
+<script src="games/miner.js?v=385"></script>
+<script src="games/kong.js?v=385"></script>
+<script src="games/bell.js?v=385"></script>
+<script src="games/parity.js?v=385"></script>
+<script src="games/triad.js?v=385"></script>
+<script src="games/forehead.js?v=385"></script>
+<script src="games/spy.js?v=385"></script>
+<script src="games/baseball.js?v=385"></script>
+<script src="season.js?v=385"></script>
+</body>
+</html>
