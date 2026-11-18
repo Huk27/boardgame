@@ -1,7 +1,11 @@
 'use strict';
 /* 머리싸움 공통 틀: 방(P2P), 게임 고르기, 가이드, 효과음, 이모지, 컴퓨터 상대 */
 window.GAMES = window.GAMES || {};
-const GAME_ORDER = ['geniusai', 'devil3ai', 'threefront', 'wall', 'marble', 'gomoku', 'reversi', 'dots', 'mancala', 'drop4', 'ttt9', 'hex', 'checkers', 'fleet', 'nim', 'parity', 'marbles', 'rps2', 'rps9', 'auction', 'chosung', 'bingo', 'liar', 'thief', 'nothanks', 'expedition', 'flowers', 'stones', 'market', 'cards5', 'pushfive', 'hilo', 'virus', 'rulerace', 'secretnum', 'zoo', 'territory', 'morris', 'hexagon', 'dicepoker', 'cops', 'unknown', 'timeauc', 'halloween', 'sniper', 'treasure', 'tripledice', 'balmancala', 'wallgo', 'doubtbet', 'pyramid', 'bigsmall', 'bagchal', 'qtruth', 'elimvote', 'kingqueen', 'firstcome', 'junglemaze', 'ascend', 'colorturn', 'numchange', 'secretdice', 'exproad', 'mysterynum', 'realtime', 'mazecode', 'daynight', 'patternblock', 'maincolor', 'realauction', 'battleasc', 'hiddenmission', 'switchpoker', 'mysterytime', 'balancematch', 'predictwin', 'brickbuild', 'formulalink', 'blindbet', 'sevennote', 'hiddencode', 'crimmemory', 'summaze', 'tri13', 'memory30', 'goodevil','goodevilai', 'blackvillage', 'artauction', 'mixmatch', 'fruitshop', 'blackwhite2', 'jury', 'betrps', 'midrace', 'swordshield', 'duoface', 'miner', 'kong', 'bell', 'triad', 'forehead', 'spy', 'baseball'];
+GAMES.nightweaver = {
+  title:'밤을 짓는 새', alias:'Nightweaver', emoji:'🌙', tags:['퍼즐','혼자','오리지널'],
+  tagline:'전등을 움직여 그림자 길을 잇는 1인용 옥상 모험.', soloPage:'nightweaver/'
+};
+const GAME_ORDER = ['nightweaver', 'geniusai', 'devil3ai', 'threefront', 'wall', 'marble', 'gomoku', 'reversi', 'dots', 'mancala', 'drop4', 'ttt9', 'hex', 'checkers', 'fleet', 'nim', 'parity', 'marbles', 'rps2', 'rps9', 'auction', 'chosung', 'bingo', 'liar', 'thief', 'nothanks', 'expedition', 'flowers', 'stones', 'market', 'cards5', 'pushfive', 'hilo', 'virus', 'rulerace', 'secretnum', 'zoo', 'territory', 'morris', 'hexagon', 'dicepoker', 'cops', 'unknown', 'timeauc', 'halloween', 'sniper', 'treasure', 'tripledice', 'balmancala', 'wallgo', 'doubtbet', 'pyramid', 'bigsmall', 'bagchal', 'qtruth', 'elimvote', 'kingqueen', 'firstcome', 'junglemaze', 'ascend', 'colorturn', 'numchange', 'secretdice', 'exproad', 'mysterynum', 'realtime', 'mazecode', 'daynight', 'patternblock', 'maincolor', 'realauction', 'battleasc', 'hiddenmission', 'switchpoker', 'mysterytime', 'balancematch', 'predictwin', 'brickbuild', 'formulalink', 'blindbet', 'sevennote', 'hiddencode', 'crimmemory', 'summaze', 'tri13', 'memory30', 'goodevil','goodevilai', 'blackvillage', 'artauction', 'mixmatch', 'fruitshop', 'blackwhite2', 'jury', 'betrps', 'midrace', 'swordshield', 'duoface', 'miner', 'kong', 'bell', 'triad', 'forehead', 'spy', 'baseball'];
 const U = {
   esc: t => String(t).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch])),
   shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.random()*(i+1)|0; [a[i],a[j]]=[a[j],a[i]]; } return a; },
@@ -269,6 +273,10 @@ function scheduleStep(){
   stepTimer=setTimeout(()=>{ stepTimer=null; if(mod()!==m || !S || mode==='guest') return; if(guidePause()){ scheduleStep(); return; } m.step(S); changed(); }, d);
 }
 function startGame(id, newMode){
+  if(GAMES[id].soloPage){
+    if(!isNet()){ markRecent(id); location.assign(GAMES[id].soloPage); }
+    return;
+  }
   if(newMode) mode=newMode;
   gameId=id; compactGuests(); if(GAMES[id].reset) GAMES[id].reset(); S=GAMES[id].init(0, mode==='host'&&nPlayers()>2?{humans:Math.min(nPlayers(),GAMES[id].maxH||2)}:undefined); lastPulse=null; markRecent(id); changed();
 }
@@ -467,7 +475,7 @@ function catOf(id){ const c=CATS.find(c=>c.ids.includes(id)); if(c) return c.k; 
   return tg.includes('카드')?'card' : tg.includes('심리전')?'psy' : (tg.includes('추리')||tg.includes('퀴즈'))?'quiz' : tg.includes('스피드')?'party' : 'brain'; }
 const catName=k=> (CATS.find(c=>c.k===k)||{}).n || '';
 function miniRec(id){ const rec=LS.get('ms-rec',{}), a=rec[id+':ai'], p=rec[id+':pvp'], w=(a?a.w:0)+(p?p.w:0), l=(a?a.l:0)+(p?p.l:0); return (a||p) ? `<span class="t-rec">${w}승 ${l}패</span>` : ''; }
-function pcount(g){ const mh=g.maxH||2; return mh>2?{t:`👥 1~${mh}명`,d:`사람 1~${mh}명이 같이 (빈자리는 동물이 채워요)`}:g.ai||g.table?{t:'👥 1~2명',d:'둘이서 · 혼자면 컴퓨터와'}:{t:'👥 2명',d:'둘이서'}; }
+function pcount(g){ if(g.soloPage) return {t:'🌙 1명',d:'혼자 하는 퍼즐 모험'}; const mh=g.maxH||2; return mh>2?{t:`👥 1~${mh}명`,d:`사람 1~${mh}명이 같이 (빈자리는 동물이 채워요)`}:g.ai||g.table?{t:'👥 1~2명',d:'둘이서 · 혼자면 컴퓨터와'}:{t:'👥 2명',d:'둘이서'}; }
 function tileHTML(id){
   const g=GAMES[id], nw=isNewG(id);
   return `<button class="tile c-${catOf(id)} ${nw?'isnew':''}" data-open="${id}">
@@ -482,7 +490,9 @@ function openSheet(id){
   const g=GAMES[id]; if(!g) return; sheetId=id;
   const inRoom=!!mode, tags=(g.tags||[]).map(tg=>`<span class="gtag" data-tag="${tg}">#${tg}</span>`).join('');
   let btns='';
-  if(inRoom){
+  if(g.soloPage){
+    btns += `<button data-quick="${id}">▶ 혼자 시작하기</button>`;
+  } else if(inRoom){
     if(!offline() || g.ai || g.table) btns += `<button data-play="${id}">${!offline() ? '▶ 이 게임 시작' : g.table ? '🤖 동물들과 하기' : '🤖 컴퓨터와 하기'}</button>`;   // table: 동물이 스스로 움직이는 판
     if(offline() && g.local) btns += `<button class="ghost" data-local="${id}">👥 한 화면 둘이</button>`;
   } else {
@@ -491,7 +501,7 @@ function openSheet(id){
     if(g.local) btns += `<button class="ghost" data-qlocal="${id}">👥 한 화면 둘이</button>`;
     btns += `<p class="sh-hint">친구랑 하려면 위에서 <b>방 만들기</b> → 이 게임 고르기</p>`;
   }
-  btns += `<button class="ghost" data-guide="${id}">📖 규칙 보기</button>`;
+  if(!g.soloPage) btns += `<button class="ghost" data-guide="${id}">📖 규칙 보기</button>`;
   $('sheetBody').innerHTML = `<div class="sh-top c-${catOf(id)}"><span class="sh-emo">${g.emoji}</span><div><small>${catName(catOf(id))}</small><h3>${g.title}</h3>${g.ref?`<span class="ref">${g.ref}</span>`:''}</div></div>
     <p class="sh-desc">${g.tagline}</p><p class="sh-pc">${pcount(g).t} <small>${pcount(g).d}${g.local?' · 한 화면 둘이도 돼요':''}</small></p>${tags?`<div class="gtags">${tags}</div>`:''}${recordHTML(id)}<div class="sh-btns">${btns}</div>`;
   const d=$('gsheet'); if(!d.open) d.showModal();
@@ -579,7 +589,7 @@ const renderHomeCards=()=>{ listCards('homeCards','search',false,()=>true); rend
     { let H=[]; try{ H=JSON.parse(localStorage.getItem('ms-hof')||'[]'); }catch(_){} if(H.length){ const b=document.createElement('div'); b.className='gn-hof'; b.innerHTML=`<b>🏛️ 명예의 전당</b>${H.slice(0,5).map(x=>{ const d=new Date(x.at); return `<div><small>${d.getMonth()+1}/${d.getDate()}</small> 👑 ${U.esc(x.champ)}${x.me?' <i>(나!)</i>':''}${x.aw&&x.aw.length?` <small>· ${x.aw.map(U.esc).join(' · ')}</small>`:''}${x.hl?`<br><small>🎬 ${U.esc(x.hl)}</small>`:''}</div>`; }).join('')}`; (se.querySelector('.gn-resume')||d).after(b); } }   /* 🏛️ 명예의 전당 (2026-11-11) */ const old=se.querySelector('.ss-entry:not(.gn-entry)'); if(old){ old.classList.add('ss-old'); const b=old.querySelector('b'); if(b) b.textContent='🗂️ 예전 방식 시즌 (혼자 · 규칙형 동물)'; } } } };   /* 🏆 새 AI 시즌을 맨 위에 (2026-11-11) */
 function renderRecent(){
   const box=$('recent'); if(!box) return;
-  const rc=LS.get('ms-recent',[]).filter(id=>GAMES[id]&&GAMES[id].ai);
+  const rc=LS.get('ms-recent',[]).filter(id=>GAMES[id]&&(GAMES[id].ai||GAMES[id].soloPage));
   box.hidden=!rc.length;
   box.innerHTML = rc.length ? `<span>⏱ 최근 한 게임</span>`+rc.map(id=>`<button class="ghost small" data-quick="${id}">${GAMES[id].emoji} ${GAMES[id].title}</button>`).join('')+`<small>누르면 바로 혼자 연습</small>` : '';
 }
@@ -593,7 +603,7 @@ function renderMenu(){
   $('menuHint').textContent=hint;
   renderLevel();
   if(isNet()&&NP>2&&!grpShown){ grpShown=true; if(!catSel.menuCards) catSel.menuCards='group'; } if(NP<=2&&catSel.menuCards==='group') catSel.menuCards='';
-  listCards('menuCards','menuSearch',true,id=>isNet() || GAMES[id].ai || GAMES[id].local || GAMES[id].table);   // table: 동물이 스스로 움직이는 판(선과 악 · AI판)도 혼자 연습 목록에
+  listCards('menuCards','menuSearch',true,id=>GAMES[id].soloPage ? !isNet() : isNet() || GAMES[id].ai || GAMES[id].local || GAMES[id].table);   // table: 동물이 스스로 움직이는 판(선과 악 · AI판)도 혼자 연습 목록에
 }
 function onCards(e){
   const j=e.target.closest('[data-cat-jump]'); if(j){ const box=e.currentTarget.id||(mode?'menuCards':'homeCards'); catSel[box]=j.dataset.catJump; (box==='menuCards'?renderMenu:renderHomeCards)(); $(box).scrollIntoView({block:'start'}); return; }
