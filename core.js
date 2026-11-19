@@ -1,11 +1,16 @@
 'use strict';
 /* 머리싸움 공통 틀: 방(P2P), 게임 고르기, 가이드, 효과음, 이모지, 컴퓨터 상대 */
 window.GAMES = window.GAMES || {};
+GAMES.deadagain = {
+  title:'데블스 플랜 3 · 데드 어게인', alias:'데블스플랜3 데블스플랜 시즌3 Dead Again',
+  emoji:'◆', tags:['퍼즐','심리전','추리','혼자','두뇌서바이벌'],
+  tagline:'1~10화의 메인·감옥·유배지 매치를 플레이하세요.', soloPage:'deadagain/'
+};
 GAMES.nightweaver = {
   title:'밤을 짓는 새', alias:'Nightweaver', emoji:'🌙', tags:['퍼즐','혼자','오리지널'],
   tagline:'전등을 움직여 그림자 길을 잇는 1인용 옥상 모험.', soloPage:'nightweaver/'
 };
-const GAME_ORDER = ['nightweaver', 'geniusai', 'devil3ai', 'threefront', 'wall', 'marble', 'gomoku', 'reversi', 'dots', 'mancala', 'drop4', 'ttt9', 'hex', 'checkers', 'fleet', 'nim', 'parity', 'marbles', 'rps2', 'rps9', 'auction', 'chosung', 'bingo', 'liar', 'thief', 'nothanks', 'expedition', 'flowers', 'stones', 'market', 'cards5', 'pushfive', 'hilo', 'virus', 'rulerace', 'secretnum', 'zoo', 'territory', 'morris', 'hexagon', 'dicepoker', 'cops', 'unknown', 'timeauc', 'halloween', 'sniper', 'treasure', 'tripledice', 'balmancala', 'wallgo', 'doubtbet', 'pyramid', 'bigsmall', 'bagchal', 'qtruth', 'elimvote', 'kingqueen', 'firstcome', 'junglemaze', 'ascend', 'colorturn', 'numchange', 'secretdice', 'exproad', 'mysterynum', 'realtime', 'mazecode', 'daynight', 'patternblock', 'maincolor', 'realauction', 'battleasc', 'hiddenmission', 'switchpoker', 'mysterytime', 'balancematch', 'predictwin', 'brickbuild', 'formulalink', 'blindbet', 'sevennote', 'hiddencode', 'crimmemory', 'summaze', 'tri13', 'memory30', 'goodevil','goodevilai', 'blackvillage', 'artauction', 'mixmatch', 'fruitshop', 'blackwhite2', 'jury', 'betrps', 'midrace', 'swordshield', 'duoface', 'miner', 'kong', 'bell', 'triad', 'forehead', 'spy', 'baseball'];
+const GAME_ORDER = ['deadagain', 'nightweaver', 'geniusai', 'devil3ai', 'threefront', 'wall', 'marble', 'gomoku', 'reversi', 'dots', 'mancala', 'drop4', 'ttt9', 'hex', 'checkers', 'fleet', 'nim', 'parity', 'marbles', 'rps2', 'rps9', 'auction', 'chosung', 'bingo', 'liar', 'thief', 'nothanks', 'expedition', 'flowers', 'stones', 'market', 'cards5', 'pushfive', 'hilo', 'virus', 'rulerace', 'secretnum', 'zoo', 'territory', 'morris', 'hexagon', 'dicepoker', 'cops', 'unknown', 'timeauc', 'halloween', 'sniper', 'treasure', 'tripledice', 'balmancala', 'wallgo', 'doubtbet', 'pyramid', 'bigsmall', 'bagchal', 'qtruth', 'elimvote', 'kingqueen', 'firstcome', 'junglemaze', 'ascend', 'colorturn', 'numchange', 'secretdice', 'exproad', 'mysterynum', 'realtime', 'mazecode', 'daynight', 'patternblock', 'maincolor', 'realauction', 'battleasc', 'hiddenmission', 'switchpoker', 'mysterytime', 'balancematch', 'predictwin', 'brickbuild', 'formulalink', 'blindbet', 'sevennote', 'hiddencode', 'crimmemory', 'summaze', 'tri13', 'memory30', 'goodevil','goodevilai', 'blackvillage', 'artauction', 'mixmatch', 'fruitshop', 'blackwhite2', 'jury', 'betrps', 'midrace', 'swordshield', 'duoface', 'miner', 'kong', 'bell', 'triad', 'forehead', 'spy', 'baseball'];
 const U = {
   esc: t => String(t).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch])),
   shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.random()*(i+1)|0; [a[i],a[j]]=[a[j],a[i]]; } return a; },
@@ -467,7 +472,7 @@ function isNewG(id){ try{ return returning() && localStorage.getItem('ms-seen-'+
 const CATS=[
   {k:'brain', n:'🧠 두뇌 전략', d:'판 위에서 겨루는 수 싸움', ids:['midrace','blackvillage','formulalink','wallgo','colorturn','junglemaze','bagchal','morris','wall','marble','gomoku','reversi','dots','mancala','drop4','ttt9','hex','checkers','nim','cards5','pushfive']},
   {k:'card',  n:'🃏 카드 게임', d:'손패를 숨기고 겨루는 카드', ids:['threefront','duoface','predictwin','switchpoker','expedition','stones','market','flowers','nothanks','thief']},
-  {k:'psy',   n:'🎭 심리전·블러핑', d:'눈치·뻥·버릇 읽기', ids:['geniusai','devil3ai','kong','miner','swordshield','betrps','jury','blackwhite2','fruitshop','artauction','goodevil','goodevilai','tri13','blindbet','sevennote','virus','realauction','maincolor','daynight','realtime','secretdice','numchange','kingqueen','elimvote','bigsmall','rulerace','secretnum','zoo','territory','cops','unknown','timeauc','halloween','treasure','balmancala','hilo','parity','marbles','rps2','rps9','auction','forehead','liar']},
+  {k:'psy',   n:'🎭 심리전·블러핑', d:'눈치·뻥·버릇 읽기', ids:['deadagain','geniusai','devil3ai','kong','miner','swordshield','betrps','jury','blackwhite2','fruitshop','artauction','goodevil','goodevilai','tri13','blindbet','sevennote','virus','realauction','maincolor','daynight','realtime','secretdice','numchange','kingqueen','elimvote','bigsmall','rulerace','secretnum','zoo','territory','cops','unknown','timeauc','halloween','treasure','balmancala','hilo','parity','marbles','rps2','rps9','auction','forehead','liar']},
   {k:'quiz', n:'🔎 추리·퀴즈', d:'숨은 걸 찾고 맞히기', ids:['mixmatch','memory30','summaze','crimmemory','hiddencode','brickbuild','mysterytime','hexagon','hiddenmission','battleasc','patternblock','mazecode','mysterynum','exproad','ascend','firstcome','qtruth','pyramid','fleet','triad','baseball','chosung','bingo']},
   {k:'party', n:'🎉 파티·스피드', d:'시끌벅적 반응·마피아', ids:['balancematch','bell','spy']},
 ];
@@ -475,7 +480,7 @@ function catOf(id){ const c=CATS.find(c=>c.ids.includes(id)); if(c) return c.k; 
   return tg.includes('카드')?'card' : tg.includes('심리전')?'psy' : (tg.includes('추리')||tg.includes('퀴즈'))?'quiz' : tg.includes('스피드')?'party' : 'brain'; }
 const catName=k=> (CATS.find(c=>c.k===k)||{}).n || '';
 function miniRec(id){ const rec=LS.get('ms-rec',{}), a=rec[id+':ai'], p=rec[id+':pvp'], w=(a?a.w:0)+(p?p.w:0), l=(a?a.l:0)+(p?p.l:0); return (a||p) ? `<span class="t-rec">${w}승 ${l}패</span>` : ''; }
-function pcount(g){ if(g.soloPage) return {t:'🌙 1명',d:'혼자 하는 퍼즐 모험'}; const mh=g.maxH||2; return mh>2?{t:`👥 1~${mh}명`,d:`사람 1~${mh}명이 같이 (빈자리는 동물이 채워요)`}:g.ai||g.table?{t:'👥 1~2명',d:'둘이서 · 혼자면 컴퓨터와'}:{t:'👥 2명',d:'둘이서'}; }
+function pcount(g){ if(g.soloPage) return {t:'1명',d:'혼자 플레이'}; const mh=g.maxH||2; return mh>2?{t:`👥 1~${mh}명`,d:`사람 1~${mh}명이 같이 (빈자리는 동물이 채워요)`}:g.ai||g.table?{t:'👥 1~2명',d:'둘이서 · 혼자면 컴퓨터와'}:{t:'👥 2명',d:'둘이서'}; }
 function tileHTML(id){
   const g=GAMES[id], nw=isNewG(id);
   return `<button class="tile c-${catOf(id)} ${nw?'isnew':''}" data-open="${id}">
@@ -582,7 +587,7 @@ function listCards(boxId,searchId,inRoom,pred){
   const cnt=$(searchId+'Count'); if(cnt) cnt.textContent = (q.trim()||cat) ? `${shown.length} / ${ids.length}개` : `${ids.length}개`;
 }
 const renderHomeCards=()=>{ listCards('homeCards','search',false,()=>true); renderRecent(); if(window.Season) Season.entry($('seasonEntry'));
-  { const se=$('seasonEntry'); if(se&&GAMES.geniusai){ const d=document.createElement('button'); d.className='ss-entry gn-entry'; d.type='button'; d.innerHTML='<b>🏆 더 지니어스 · 놀이터 시즌 1 <small>🤖 AI판</small></b><span>동물 친구들이 직접 생각하고 말하는 8인 서바이벌 — 혼자, 또는 방을 만들어 친구들과 함께</span>'; d.onclick=()=>openSheet('geniusai'); se.prepend(d); if(GAMES.devil3ai){ const d2=document.createElement('button'); d2.className='ss-entry gn-entry dv-entry'; d2.type='button'; d2.innerHTML='<b>😈 데블스 플랜 · 놀이터 시즌 <small>🤖 AI판 · 10인</small></b><span>메인 매치 꼴찌와 감옥 매치 꼴찌는 유배지로 — 연맹의 징표, 비밀 임무, 패자부활전까지</span>'; d2.onclick=()=>openSheet('devil3ai'); d.after(d2); }
+  { const se=$('seasonEntry'); if(se&&GAMES.geniusai){ const d=document.createElement('button'); d.className='ss-entry gn-entry'; d.type='button'; d.innerHTML='<b>🏆 더 지니어스 · 놀이터 시즌 1 <small>🤖 AI판</small></b><span>동물 친구들이 직접 생각하고 말하는 8인 서바이벌 — 혼자, 또는 방을 만들어 친구들과 함께</span>'; d.onclick=()=>openSheet('geniusai'); se.prepend(d); if(GAMES.devil3ai){ const d2=document.createElement('button'); d2.className='ss-entry gn-entry dv-entry'; d2.type='button'; d2.innerHTML='<b>😈 데블스 플랜 · 기존 놀이터 시즌 <small>친구와 AI · 10인</small></b><span>메인 매치 꼴찌와 감옥 매치 꼴찌는 유배지로 — 연맹의 징표, 비밀 임무, 패자부활전까지</span>'; d2.onclick=()=>openSheet('devil3ai'); d.after(d2); }
     { const sv=savedSeason(); if(sv){ const r=document.createElement('button'); r.className='ss-entry gn-entry gn-resume'; r.type='button'; const dt=new Date(sv.at||Date.now()), al=(sv.S.players||[]).filter(x=>!x.out).length;
       r.innerHTML=`<b>▶ 지난 시즌 이어 하기 <small>${sv.mode==='host'?`👥 방 ${U.esc(sv.code||'')}`:'혼자'}</small></b><span>제${sv.S.ep||1}회 · 남은 ${al}명 · ${dt.getMonth()+1}/${dt.getDate()} ${dt.getHours()}:${String(dt.getMinutes()).padStart(2,'0')} 저장${sv.mode==='host'?' — 친구는 같은 방 코드로 다시 들어오면 자기 자리로 돌아와요':''}</span>`;
       r.onclick=()=>{ if(!confirm('지난 시즌을 이어서 할까요?')) return; resumeSeason(); }; d.after(r); } }
