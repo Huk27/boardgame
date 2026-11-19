@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#121919" />
+    <title>데드 어게인 · 친구 시즌</title>
+    <link rel="stylesheet" href="salon.css" />
+  </head>
+  <body>
+    <header>
+      <a href="./">‹　시즌 로비</a><b>◆　DEAD AGAIN</b
+      ><button id="sound" aria-pressed="false">♫ 소리 켜기</button>
+    </header>
+    <main>
+      <section id="theatre">
+        <canvas
+          id="hall"
+          width="960"
+          height="510"
+          tabindex="0"
+          aria-label="게임 살롱. 바닥을 누르거나 방향키로 내 캐릭터를 움직이세요."
+        ></canvas>
+        <div id="scenehead">
+          <small>THE PRIVATE SALON</small>
+          <h1 id="title">친구 시즌</h1>
+        </div>
+        <div id="arrival">
+          <small>INVITATION　/　SEASON III</small>
+          <h2>여덟 자리의<br />비밀 살롱<span>.</span></h2>
+          <p>친구와 같은 판에 앉아 네 번의 밤을 건너세요.</p>
+        </div>
+        <div id="roomtag" hidden></div>
+        <div id="scenehint"></div>
+        <button id="camera" hidden aria-pressed="false">⌖ 가까이</button>
+      </section>
+      <section id="console">
+        <div id="entry">
+          <div>
+            <small>YOUR INVITATION</small>
+            <h2>살롱에 입장</h2>
+            <p>각자 휴대폰으로 접속하세요. 빈자리는 AI가 맡습니다.</p>
+          </div>
+          <label
+            >내 이름<input id="nickname" maxlength="12" placeholder="닉네임" autocomplete="off"
+          /></label>
+          <div class="actions">
+            <button class="primary" id="create">새 방 만들기</button
+            ><input
+              id="code"
+              maxlength="5"
+              placeholder="방 코드"
+              autocapitalize="characters"
+              autocomplete="off"
+              aria-label="방 코드"
+            /><button id="join">참가</button>
+          </div>
+        </div>
+        <button id="cancel" hidden>연결 취소</button>
+        <div id="status" aria-live="polite"></div>
+        <div id="play" hidden>
+          <div class="roomtools">
+            <button id="invite">초대 링크 복사</button><button id="wave">손 흔들기</button
+            ><button id="think">고민 중…</button><button id="leave">나가기</button>
+          </div>
+          <div id="dossier"></div>
+          <div id="radio">
+            <div id="transcript" role="log"></div>
+            <button id="scope" hidden>귓속말 종료 · 모두에게</button>
+            <form id="say">
+              <input
+                maxlength="90"
+                id="message"
+                autocomplete="off"
+                aria-label="모두에게 할 말"
+                placeholder="테이블에 한마디…"
+              /><button>보내기</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="vendor/peerjs.min.js"></script>
+    <script>
+      window.Matches = {}
+      window.RoomBoards = {}
+    </script>
+    <script src="exile.js"></script>
+    <script src="mp-early.js"></script>
+    <script src="mp-late.js"></script>
+    <script src="mp-side.js"></script>
+    <script src="table-art.js"></script>
+    <script src="props.js"></script>
+    <script src="hall.js"></script>
+    <script src="salon.js"></script>
+  </body>
+</html>

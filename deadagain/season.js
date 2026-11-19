@@ -53,7 +53,7 @@ function illustration(id){
 function card(id,i){return `<button class="match-card" data-go="select-${id}"><div class="ill"><span class="serial">D / 0${i+1}</span>${illustration(id)}</div><div class="card-foot"><div><small>${i+1}일차 메인매치</small><br><b>${M[id].name}</b></div><span class="arrow">↗</span></div></button>`}
 function home(){
  const r=data.run, p=data.practice, label=r&&!r.finished?'시즌 이어하기　→':r?'시즌 기록 보기　→':'시즌 입장　→';
- app.innerHTML=`<section class="hero"><div><div class="eyebrow">SEASON 03　/　EP. 01–10</div><h1>데블스 플랜<small> 3</small><br><em>데드 어게인</em></h1><p>생활동의 거래에서 유배지의 마지막 선택까지.<br>이번 판의 결과는 당신이 결정합니다.</p><div class="hero-actions">${btn(label,'season','primary')}${btn('회차별 게임　↓','archive')}</div></div></section>
+ app.innerHTML=`<section class="hero"><div><div class="eyebrow">SEASON 03　/　EP. 01–10</div><h1>데블스 플랜<small> 3</small><br><em>데드 어게인</em></h1><p>생활동의 거래에서 유배지의 마지막 선택까지.<br>이번 판의 결과는 당신이 결정합니다.</p><div class="hero-actions"><a class="primary salon-entry" href="salon.html">친구와 시즌 입장　→</a>${btn(r?'내 시즌 기록':'혼자 플레이','season')}${btn('회차별 게임　↓','archive')}</div></div></section>
  <div class="archive-head"><div><div class="type">MAIN MATCHES</div><h2>메인매치</h2></div><span class="archive-mark">01 — 04</span></div><div class="tile-grid">${main.map(card).join('')}</div>
  <section class="index-section" id="archive"><div class="archive-head"><div><div class="type">EPISODE ARCHIVE</div><h2>회차별 게임</h2></div>${p&&!p.s.done?btn('연습 이어하기','resume-practice'):''}</div>
  <div class="filters">${['전체','메인매치','감옥매치','유배지','생활동','신의 시험'].map(x=>btn(x,'filter-'+x,x===filter?'on':'')).join('')}</div><div id="episodes"></div></section>`;

@@ -3,8 +3,8 @@
 window.GAMES = window.GAMES || {};
 GAMES.deadagain = {
   title:'데블스 플랜 3 · 데드 어게인', alias:'데블스플랜3 데블스플랜 시즌3 Dead Again',
-  emoji:'◆', tags:['퍼즐','심리전','추리','혼자','두뇌서바이벌'],
-  tagline:'1~10화의 메인·감옥·유배지 매치를 플레이하세요.', soloPage:'deadagain/'
+  emoji:'◆', tags:['퍼즐','심리전','추리','친구','혼자','두뇌서바이벌'],
+  tagline:'친구와 같은 방에서 시즌을 진행하거나 혼자 매치를 플레이하세요.', soloPage:'deadagain/', friendPage:'deadagain/salon.html', maxH:8
 };
 GAMES.nightweaver = {
   title:'밤을 짓는 새', alias:'Nightweaver', emoji:'🌙', tags:['퍼즐','혼자','오리지널'],
@@ -480,7 +480,7 @@ function catOf(id){ const c=CATS.find(c=>c.ids.includes(id)); if(c) return c.k; 
   return tg.includes('카드')?'card' : tg.includes('심리전')?'psy' : (tg.includes('추리')||tg.includes('퀴즈'))?'quiz' : tg.includes('스피드')?'party' : 'brain'; }
 const catName=k=> (CATS.find(c=>c.k===k)||{}).n || '';
 function miniRec(id){ const rec=LS.get('ms-rec',{}), a=rec[id+':ai'], p=rec[id+':pvp'], w=(a?a.w:0)+(p?p.w:0), l=(a?a.l:0)+(p?p.l:0); return (a||p) ? `<span class="t-rec">${w}승 ${l}패</span>` : ''; }
-function pcount(g){ if(g.soloPage) return {t:'1명',d:'혼자 플레이'}; const mh=g.maxH||2; return mh>2?{t:`👥 1~${mh}명`,d:`사람 1~${mh}명이 같이 (빈자리는 동물이 채워요)`}:g.ai||g.table?{t:'👥 1~2명',d:'둘이서 · 혼자면 컴퓨터와'}:{t:'👥 2명',d:'둘이서'}; }
+function pcount(g){ if(g.friendPage) return {t:'👥 1~'+g.maxH+'명',d:'각자 휴대폰으로 참가 · 빈자리는 AI'}; if(g.soloPage) return {t:'1명',d:'혼자 플레이'}; const mh=g.maxH||2; return mh>2?{t:`👥 1~${mh}명`,d:`사람 1~${mh}명이 같이 (빈자리는 동물이 채워요)`}:g.ai||g.table?{t:'👥 1~2명',d:'둘이서 · 혼자면 컴퓨터와'}:{t:'👥 2명',d:'둘이서'}; }
 function tileHTML(id){
   const g=GAMES[id], nw=isNewG(id);
   return `<button class="tile c-${catOf(id)} ${nw?'isnew':''}" data-open="${id}">
@@ -496,6 +496,7 @@ function openSheet(id){
   const inRoom=!!mode, tags=(g.tags||[]).map(tg=>`<span class="gtag" data-tag="${tg}">#${tg}</span>`).join('');
   let btns='';
   if(g.soloPage){
+    if(g.friendPage) btns += `<button data-friends="${id}">친구와 시즌 입장</button>`;
     btns += `<button data-quick="${id}">▶ 혼자 시작하기</button>`;
   } else if(inRoom){
     if(!offline() || g.ai || g.table) btns += `<button data-play="${id}">${!offline() ? '▶ 이 게임 시작' : g.table ? '🤖 동물들과 하기' : '🤖 컴퓨터와 하기'}</button>`;   // table: 동물이 스스로 움직이는 판
@@ -834,6 +835,7 @@ function boot(){
     if(e.target===$('gsheet') || e.target.closest('[data-close]')){ closeSheet(); return; }
     const t=e.target.closest('[data-tag]'); if(t){ const inp=mode?'menuSearch':'search'; closeSheet(); catSel[mode?'menuCards':'homeCards']=''; $(inp).value='#'+t.dataset.tag; $(inp).dispatchEvent(new Event('input')); return; }
     const b=e.target.closest('button'); if(!b) return;
+    if(b.dataset.friends){ markRecent(b.dataset.friends); location.assign(GAMES[b.dataset.friends].friendPage); return; }
     if(b.dataset.guide){ openGuide(b.dataset.guide); return; }
     if(b.dataset.watch){ const id=b.dataset.watch; closeSheet(); saveNick(); mode='solo'; window.GA_WATCH=true; startGame(id); return; }
     if(b.dataset.quick||b.dataset.qlocal){ const id=b.dataset.quick||b.dataset.qlocal; closeSheet(); saveNick(); newPersona(); mode='solo'; if(b.dataset.qlocal) startGame(id,'local'); else startGame(id); return; }
