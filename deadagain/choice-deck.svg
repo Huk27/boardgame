@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="480" height="224" viewBox="0 0 480 224" fill="none">
+  <defs>
+    <linearGradient id="brass" x2=".86" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#bc8a50"/><stop offset=".18" stop-color="#fce3a0"/>
+      <stop offset=".39" stop-color="#a07849"/><stop offset=".6" stop-color="#eaca88"/>
+      <stop offset=".78" stop-color="#8a623e"/><stop offset="1" stop-color="#f1d59a"/>
+    </linearGradient>
+    <linearGradient id="day" x2=".67" y2="1">
+      <stop stop-color="#fff0c9"/><stop offset=".42" stop-color="#f3dca5"/>
+      <stop offset=".7" stop-color="#e6b780"/><stop offset="1" stop-color="#b87a4a"/>
+    </linearGradient>
+    <linearGradient id="night" x2="1" y2="1">
+      <stop stop-color="#172e37"/><stop offset=".45" stop-color="#095154"/>
+      <stop offset=".72" stop-color="#163b42"/><stop offset="1" stop-color="#11262e"/>
+    </linearGradient>
+    <radialGradient id="sun" cx=".43" cy=".3" r=".75">
+      <stop stop-color="#fff7cd"/><stop offset=".5" stop-color="#f3c36d"/>
+      <stop offset=".79" stop-color="#db9446"/><stop offset="1" stop-color="#894a2c"/>
+    </radialGradient>
+    <linearGradient id="moon" x1="0" x2="1" y1="0" y2="1">
+      <stop stop-color="#fff6bc"/><stop offset=".52" stop-color="#ddd69a"/>
+      <stop offset="1" stop-color="#99b79d"/>
+    </linearGradient>
+    <radialGradient id="velvet" cx=".49" cy=".44" r=".75">
+      <stop stop-color="#6c343e"/><stop offset=".55" stop-color="#4e2633"/>
+      <stop offset="1" stop-color="#231e29"/>
+    </radialGradient>
+    <pattern id="paper" width="5" height="4" patternUnits="userSpaceOnUse">
+      <path d="M0 1h1m2 2h1" stroke="#785136" opacity=".24" stroke-width=".6"/>
+    </pattern>
+    <pattern id="cloth" width="4" height="4" patternUnits="userSpaceOnUse">
+      <path d="m0 4 4-4" stroke="#f6d291" opacity=".1" stroke-width=".65"/>
+    </pattern>
+    <pattern id="backWeave" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M-16 0 0 16 16 0 32 16 48 0M-16 32 0 16 16 32 32 16 48 32" stroke="#c2946c" stroke-width=".85"/>
+      <path d="m16 4 12 12-12 12L4 16z" stroke="#a87559" stroke-width=".65"/>
+      <path d="m16 8 8 8-8 8-8-8z" stroke="#a87559" stroke-width=".55"/>
+      <path d="m16 11 5 5-5 5-5-5z" fill="#58323c" stroke="#d9ad77" stroke-width=".65"/>
+      <path d="m16 14 2 2-2 2-2-2zM0 14l2 2-2 2-2-2zM32 14l2 2-2 2-2-2z" fill="#d5a478"/>
+      <path d="m11 5 2-2m6 26 2-2m3-18 2 2M6 21l2 2" stroke="#e3b681" stroke-width=".9"/>
+    </pattern>
+    <g id="outer">
+      <rect x="2.5" y="2.5" width="155" height="219" rx="7" stroke="url(#brass)" stroke-width="2"/>
+      <rect x="5" y="5" width="150" height="214" rx="5" stroke="#e7c587" stroke-width=".58"/>
+      <path d="M18 7.5h43l4 3h30l4-3h43M18 216.5h43l4-3h30l4 3h43" stroke="#d9b378" stroke-width=".8"/>
+      <path d="m73 8 7-2 7 2-7 2zm0 208 7-2 7 2-7 2z" fill="#e8c689"/>
+    </g>
+    <g id="notch">
+      <path d="M9 30V13l4-4h17M12 25V15l3-3h10" stroke="currentColor" stroke-width=".8"/>
+      <path d="m11 11 3 1-2 2z" fill="currentColor"/>
+    </g>
+    <g id="corners">
+      <use xlink:href="#notch"/><use xlink:href="#notch" transform="translate(160 0) scale(-1 1)"/>
+      <use xlink:href="#notch" transform="translate(0 224) scale(1 -1)"/>
+      <use xlink:href="#notch" transform="translate(160 224) scale(-1 -1)"/>
+    </g>
+    <path id="star" d="m0-7 1.7 5.3L6 0 1.7 1.6 0 7-1.6 1.6-6 0l4.4-1.7z"/>
+    <g id="ray">
+      <path d="m-2.7-26 1.5-13 1.2-5 1.2 5 1.5 13z" fill="#b4693d"/>
+      <path d="M0-29v-11" stroke="#f8d999" stroke-width=".75"/>
+      <path d="m4.3-27 2.6-10" stroke="#b97f4c" stroke-width=".85"/>
+    </g>
+    <g id="sunRays">
+      <use xlink:href="#ray"/><use xlink:href="#ray" transform="rotate(18)"/>
+      <use xlink:href="#ray" transform="rotate(36)"/><use xlink:href="#ray" transform="rotate(54)"/>
+      <use xlink:href="#ray" transform="rotate(72)"/>
+    </g>
+    <g id="city">
+      <path d="M8 171V105h4v31h5v-22h3v-6h3v-8h2v8h3v9h3v20h4v-18h4v-22h3v-4h4v4h3v37h4v-13h4v20h6v27z" fill="#d09a69" stroke="#975c3b" stroke-width=".75"/>
+      <path d="M10 169v-20h5v-11h6v-5h7v5h6v11h3v-13h3v-12h2v-7h1v7h3v12h4v5h5v10h9v19z" fill="#996746"/>
+      <g stroke="#f5d396" stroke-width="1">
+        <path d="M21 117v13m3-17v16m3-9v10m13-26v14m3-17v13m3-8v12M19 145v12m5-16v14m5-11v12"/>
+      </g>
+    </g>
+    <g id="nightCity">
+      <path d="M8 173v-51h4v19h4v-26h3v-8h4v-6h1v6h4v7h3v24h4v-11h3v-8h3v-12h2v12h3v8h3v12h6v8h9v26z" fill="#31666a" stroke="#8baca0" stroke-width=".68"/>
+      <path d="M9 171v-18h7v-8h5v-11h2v11h4v6h7v-10h6v-14h5v14h6v11h9v20z" fill="#193f45"/>
+      <path d="M21 116v15m4-15v17m15-9v13m3-14v14m-22 13v9m4-9v7" stroke="#92b7a6" stroke-width=".85"/>
+    </g>
+    <path id="base" d="M8 164h19v-4h14v-4h16v-4h11v-4h24v4h11v4h16v4h14v4h19v47l-4 4H12l-4-4z"/>
+    <g id="baseTrim" stroke="#c6a775" stroke-width=".7">
+      <path d="M9 167h19v-4h15v-4h16v-4h11v-4h20v4h11v4h16v4h15v4h19"/>
+      <path d="m19 202 7 4h28m52 0h28l7-4" opacity=".75"/>
+      <path d="m74 205 6-2 6 2-6 2z" fill="#b28a51"/>
+    </g>
+    <clipPath id="innerClip"><rect x="7" y="7" width="146" height="209" rx="4"/></clipPath>
+  </defs>
+
+  <!-- Solar court -->
+  <g>
+    <rect width="160" height="224" rx="8" fill="#4c3a2d"/>
+    <g clip-path="url(#innerClip)">
+      <rect x="7" y="7" width="146" height="209" fill="url(#day)"/>
+      <rect x="7" y="7" width="146" height="209" fill="url(#paper)"/>
+      <path d="M13 54 48 18h64l35 36v94H13z" stroke="#a6744c" opacity=".7" stroke-width=".8"/>
+      <path d="m13 69 42-44h50l42 44" stroke="#ac7c50" opacity=".55" stroke-width=".75"/>
+      <g stroke="#b27d4a" opacity=".57" stroke-width=".8">
+        <path d="M80 80 44 13m36 67L22 26m58 54L8 42m72 38L8 66m72 14L8 91m72-11L8 111m72-31 36-67M80 80l58-54M80 80l72-38M80 80l72-14M80 80l72 11M80 80l72 31"/>
+        <path d="M80 22v14m-9-12 2 11m16-11-2 11"/>
+      </g>
+      <g transform="translate(80 79)">
+        <circle r="49" stroke="#ad7147" opacity=".65" stroke-width=".85" stroke-dasharray="1 3"/>
+        <circle r="45" stroke="#ac794d" opacity=".7" stroke-width=".65"/>
+        <use xlink:href="#sunRays"/><use xlink:href="#sunRays" transform="rotate(90)"/>
+        <use xlink:href="#sunRays" transform="rotate(180)"/><use xlink:href="#sunRays" transform="rotate(270)"/>
+        <circle r="24.4" fill="#9a5b3a" stroke="#fff2c4" stroke-width="1.2"/>
+        <circle r="21.4" fill="url(#sun)" stroke="#d6a160" stroke-width=".8"/>
+        <path d="M-16 5c6 6 20 8 32 1m-29 5c7 5 15 6 24 2m-17 3.8 6 .9" stroke="#9b613b" opacity=".8" stroke-width="1"/>
+        <path d="M-17-2a18 18 0 0 1 14-15" stroke="#ffefb0" stroke-width="1.2" stroke-linecap="round"/>
+      </g>
+      <use xlink:href="#city"/><use xlink:href="#city" transform="translate(160 0) scale(-1 1)"/>
+      <path d="M30 167q14-20 38-30l12-14 12 14q24 10 38 30" fill="#ad7850"/>
+      <path d="m56 153 14-16 10-13 10 13 14 16M64 151l16-24 16 24m-23-4 7-15 7 15" stroke="#f3d09a" stroke-width="1"/>
+      <use xlink:href="#base" fill="#5a4134"/><use xlink:href="#baseTrim"/>
+    </g>
+    <use xlink:href="#outer"/><use xlink:href="#corners" color="#cbac77"/>
+  </g>
+
+  <!-- Lunar observatory -->
+  <g transform="translate(160)">
+    <rect width="160" height="224" rx="8" fill="#182e32"/>
+    <g clip-path="url(#innerClip)">
+      <rect x="7" y="7" width="146" height="209" fill="url(#night)"/>
+      <rect x="7" y="7" width="146" height="209" fill="url(#cloth)"/>
+      <path d="M13 57 51 18h58l38 39v89H13z" stroke="#9ba691" opacity=".62" stroke-width=".75"/>
+      <path d="m13 72 45-46h44l45 46" stroke="#a9b096" opacity=".48" stroke-width=".8"/>
+      <g stroke="#a8bca4" opacity=".75" stroke-width=".9">
+        <circle cx="80" cy="81" r="45" stroke-dasharray="1 3"/>
+        <circle cx="80" cy="81" r="41"/>
+        <ellipse cx="80" cy="81" rx="57" ry="27" transform="rotate(-28 80 81)" stroke-dasharray="48 7 5 7"/>
+        <ellipse cx="80" cy="81" rx="51" ry="22" transform="rotate(-54 80 81)" opacity=".55"/>
+      </g>
+      <g fill="#e4d6a0">
+        <use xlink:href="#star" transform="translate(105 49) scale(.75)"/>
+        <use xlink:href="#star" transform="translate(91 64) scale(.78)"/>
+        <use xlink:href="#star" transform="translate(109 86) scale(.42)"/>
+        <use xlink:href="#star" transform="translate(41 67) scale(.45)"/>
+        <use xlink:href="#star" transform="translate(125 98) scale(.55)"/>
+        <use xlink:href="#star" transform="translate(53 103) scale(.45)"/>
+        <circle cx="110" cy="73" r="1.2"/><circle cx="58" cy="52" r="1.2"/>
+        <circle cx="99" cy="91" r="1.1"/><circle cx="35" cy="87" r="1.2"/>
+        <circle cx="92" cy="35" r="1"/><circle cx="31" cy="53" r="1.1"/>
+      </g>
+      <path d="m91 64 14-15 5 24-11 18" stroke="#a5aa87" stroke-width=".6" stroke-dasharray="2 3"/>
+      <path d="M85 49a31.5 31.5 0 1 0 23 46.5A29.8 29.8 0 0 1 85 49Z" fill="#102f36" stroke="#243e43" stroke-width="3"/>
+      <path d="M83.5 49a31 31 0 1 0 23 46.2A30 30 0 0 1 83.5 49Z" fill="url(#moon)" stroke="#ede6b4" stroke-width=".9"/>
+      <path d="M75 55c-14 8-18 24-11 36 7 13 22 17 34 13" stroke="#93a88e" stroke-width="1"/>
+      <path d="M66 83c2 12 12 20 23 21m-22-8c4 6 11 9 17 10" stroke="#a7b59a" stroke-width=".8"/>
+      <path d="M11 132q17-11 29-6t23-3q14-10 26-6t25-1q15-6 35-2" stroke="#84a898" opacity=".7"/>
+      <path d="M10 141q15-10 30-8t26-2q12-7 24-6t26-3q17-5 36-1" stroke="#749787" opacity=".7"/>
+      <use xlink:href="#nightCity"/><use xlink:href="#nightCity" transform="translate(160 0) scale(-1 1)"/>
+      <path d="M56 154q9-14 23-20v-12h2v12q13 6 23 20" fill="#326266" stroke="#b4b796" stroke-width=".8"/>
+      <path d="M64 151q8-10 16-14 10 4 16 14m-24-2 8-10 8 10" stroke="#b3b999" stroke-width=".9"/>
+      <use xlink:href="#base" fill="#193538"/><use xlink:href="#baseTrim"/>
+    </g>
+    <use xlink:href="#outer"/><use xlink:href="#corners" color="#c7c69e"/>
+  </g>
+
+  <!-- Reversible, double-ended engraved back -->
+  <g transform="translate(320)">
+    <rect width="160" height="224" rx="8" fill="#261e26"/>
+    <g clip-path="url(#innerClip)">
+      <rect x="7" y="7" width="146" height="209" fill="url(#velvet)"/>
+      <rect x="13" y="13" width="134" height="198" fill="url(#backWeave)"/>
+      <rect x="10" y="10" width="140" height="204" rx="3" stroke="#b8966e" stroke-width="1.1"/>
+      <path d="m80 16 62 96-62 96-62-96z" fill="#4b2a36" stroke="#c29b71" stroke-width="1.1"/>
+      <path d="m80 21 58 91-58 91-58-91z" fill="url(#backWeave)" stroke="#8e654f" stroke-width=".8"/>
+      <path d="m80 35 46 77-46 77-46-77z" fill="#332831" stroke="#e3bd80" stroke-width="1"/>
+      <path d="M80 44 118 112l-38 68-38-68z" fill="#58333b" stroke="#bc8d65" stroke-width=".8"/>
+      <g stroke="#bd9367" stroke-width=".8">
+        <path d="m80 45-22 69 22 65 22-65zM80 47l-9 67 9 63 9-63z"/>
+        <path d="m44 112 36-48 36 48-36 48zM44 112l36-36 36 36-36 36z"/>
+      </g>
+      <path d="m80 86 26 26-26 26-26-26z" fill="#302731" stroke="#edd095" stroke-width="1.5"/>
+      <path d="m80 91 21 21-21 21-21-21z" fill="#6b4640" stroke="#c49968" stroke-width=".8"/>
+      <path d="M63 112q17-21 34 0-17 21-34 0z" fill="#c7a574" stroke="#f4d495" stroke-width=".8"/>
+      <circle cx="80" cy="112" r="8.7" fill="#453139" stroke="#c7a574"/>
+      <path d="m80 104 3 8-3 8-3-8z" fill="#eacf94"/>
+      <path d="m80 28 2 4-2 4-2-4zm0 160 2 4-2 4-2-4zM24 111l3-2 3 2-3 2zm106 0 3-2 3 2-3 2z" fill="#f4d699"/>
+      <rect x="7" y="7" width="146" height="209" fill="url(#cloth)"/>
+    </g>
+    <use xlink:href="#outer"/><use xlink:href="#corners" color="#e0bb85"/>
+  </g>
+</svg>

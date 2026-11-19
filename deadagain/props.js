@@ -12,7 +12,7 @@ window.PrivateProps = (() => {
     for (let i = 0; i < n; i++) {
       let y = 43 - i * 8
       out +=
-        '<g transform="translate(43 ' +
+        '<g stroke="#865f42" stroke-width="0.8" stroke-linejoin="round" transform="translate(43 ' +
         y +
         ')"><path d="M-13 0 0-7 13 0 0 7z" fill="#f2d3a0"/><path d="M-13 0 0 7v9l-13-7z" fill="#b58d66"/><path d="M13 0 0 7v9l13-7z" fill="#7a614d"/></g>'
     }

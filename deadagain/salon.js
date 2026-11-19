@@ -264,11 +264,14 @@
     if (room.groups.length) {
       for (const g of room.groups) {
         if (g.board.done) continue
+        if (B[g.key].tick?.(g.board, now)) changed = true
+        if (g.board.done) continue
         const onlyAI = g.ids.every((id) => !room.seats[id].online)
         for (let k = 0; k < (onlyAI ? 5 : 1) && !g.board.done; k++) {
           for (const i of g.ids) {
             const a = room.seats[i]
             if (a.online || (a.token && now - a.away < 18000) || g.board.done) continue
+            if (B[g.key].botReady && !B[g.key].botReady(g.board, i, now)) continue
             const input = B[g.key].bot(g.board, i)
             if (input != null && B[g.key].act(g.board, i, input)) {
               a.seq++
@@ -597,6 +600,7 @@
   }
   function reset() {
     closed = true
+    tabletop.close()
     H.setZoom(false)
     $('camera').setAttribute('aria-pressed', 'false')
     $('camera').textContent = '⌖ 가까이'
@@ -842,7 +846,12 @@
     const sig = JSON.stringify([v.phase, v.serial, v.seq, v.match, publicSeats])
     if (sig !== lastPanel) {
       lastPanel = sig
-      $('dossier').innerHTML = panel(v)
+      if (v.match?.key === 'choice' && v.match.table) {
+        tabletop.draw(v)
+      } else {
+        tabletop.close()
+        $('dossier').innerHTML = panel(v)
+      }
       if (v.match?.key !== lastMatch) {
         if (lastMatch) sound([294, 370, 494])
         lastMatch = v.match?.key || ''
@@ -885,15 +894,20 @@
       whisper(+b.dataset.seat)
       return
     }
-    if (b.dataset.key != null && !pending && (host() || connected)) {
-      pending = true
-      waitingForAck = setTimeout(() => {
-        pending = false
-      }, 1700)
-      act({ t: 'act', serial: view.serial, seq: view.seq, key: b.dataset.key })
-      sound([310])
-    }
+    if (b.dataset.key != null) playKey(b.dataset.key)
   }
+  function playKey(key) {
+    if (!view || pending || (!host() && !connected) || !view.match?.options.some((o) => o.key === key))
+      return false
+    pending = true
+    waitingForAck = setTimeout(() => {
+      pending = false
+    }, 1700)
+    act({ t: 'act', serial: view.serial, seq: view.seq, key })
+    sound([310])
+    return true
+  }
+  const tabletop = window.ChoiceTable($('dossier'), { esc, portrait, gridHTML, playKey, sound })
   $('say').onsubmit = (e) => {
     e.preventDefault()
     if (!$('message').value.trim()) return

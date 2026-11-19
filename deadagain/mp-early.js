@@ -158,6 +158,8 @@
   ]
   function setupChoice(s) {
     s.phase = 'vote'
+    s.dealtAt = Date.now()
+    delete s.reveal
     s.pending = {}
     s.votes = {}
     s.privatePick = {}
@@ -230,6 +232,7 @@
       choices[s.round][0] + ' ' + (s.ids.length - n) + '명 · ' + choices[s.round][1] + ' ' + n + '명'
     if (s.round <= 1) {
       s.phase = 'answer'
+      s.dealtAt = Date.now()
       return
     }
     if (s.round === 2) {
@@ -300,8 +303,68 @@
     s.pending[id] = key
     return everyone(s)
   }
+  // Keep the faces on the host through the closed-card beat, including across a reload.
+  function closeCards(s, kind) {
+    s.reveal = { kind, at: Date.now() + 1050 }
+    s.phase = 'sealed'
+  }
+  function advanceCards(s, now) {
+    if (!s.reveal || now < s.reveal.at) return false
+    if (s.phase === 'sealed') {
+      s.phase = 'reveal'
+      s.reveal.at = now + (s.reveal.kind === 'poker' ? 5200 : 3700)
+      return true
+    }
+    if (s.phase !== 'reveal') return false
+    const kind = s.reveal.kind
+    delete s.reveal
+    if (kind === 'vote') processVotes(s)
+    if (kind === 'answer') answerChoice(s)
+    if (kind === 'poker') resolvePoker(s)
+    return true
+  }
+  function cardTable(s, id) {
+    const kind = s.reveal?.kind || s.phase
+    const table = {
+      round: s.round + 1,
+      mission: mission[s.round],
+      kind,
+      step: s.phase,
+      labels: choices[s.round].slice(0, 2),
+      rule: choices[s.round][2],
+      points: s.points[id],
+    }
+    if (kind !== 'vote' && kind !== 'answer' && kind !== 'poker') return table
+    table.ready = s.ids.filter((p) => pending(s, p))
+    if (kind === 'poker') {
+      table.positions = s.picks[id].slice()
+      table.community = s.shared.map(face)
+    }
+    if (pending(s, id) && kind !== 'poker') table.mine = s.pending[id]
+    if (s.phase === 'reveal') {
+      if (kind === 'poker') {
+        table.hands = record(s.ids, (p) => s.picks[p].map((i) => face(s.cards[i])))
+        const rank = (p) => hand(s.shared.concat(s.picks[p].map((i) => s.cards[i])))
+        const own = rank(id),
+          other = rank(s.rivals[id])
+        table.duel = {
+          family: families[own.family],
+          rival: s.rivals[id],
+          gain: own.value > other.value ? 5 : own.value === other.value ? 2 : 0,
+        }
+      } else table.faces = { ...s.pending }
+      if (kind === 'answer') table.answer = s.answer
+    }
+    return table
+  }
+  function choiceScreen(s, id) {
+    const table = cardTable(s, id)
+    if (s.reveal)
+      return { ...view(s.phase === 'sealed' ? '모두 제출했습니다.' : '카드를 공개합니다.'), table }
+    return { ...choiceView(s, id), table }
+  }
   function choiceView(s, id) {
-    if (pending(s, id)) return waiting(s)
+    if (pending(s, id) && s.phase !== 'answer') return waiting(s)
     const title = mission[s.round] + ' · '
     if (s.phase === 'vote')
       return view(title + choices[s.round][2], [
@@ -318,7 +381,7 @@
           (s.votes[id] === 'A' ? ' 팀 단서 · 한 줄 정답 ' + s.rowHint + '개.' : '')
       return view(
         title + clue,
-        s.answers.map((n) => choice(String(n), n + '개')),
+        pending(s, id) ? [] : s.answers.map((n) => choice(String(n), n + '개')),
         grid(cubic ? 3 : 4, cubic ? s.cubes.map((n) => '▧'.repeat(n)) : s.matrix),
       )
     }
@@ -378,11 +441,11 @@
   }
   function updateChoice(s, id, key) {
     if (s.phase === 'vote') {
-      if (submit(s, id, key)) processVotes(s)
+      if (submit(s, id, key)) closeCards(s, 'vote')
       return
     }
     if (s.phase === 'answer') {
-      if (submit(s, id, key)) answerChoice(s)
+      if (submit(s, id, key)) closeCards(s, 'answer')
       return
     }
     if (s.phase === 'turf') {
@@ -421,7 +484,7 @@
       return
     }
     if (key === 'seal') {
-      if (submit(s, id, key)) resolvePoker(s)
+      if (submit(s, id, key)) closeCards(s, 'poker')
       return
     }
     const pos = Number(key.slice(1)),
@@ -472,10 +535,15 @@
     '양자택일',
     '네 번 비밀 투표하고 큐브 세기, 네모 세기, 잔디 깔기, 기억 포커를 함께 플레이합니다. 가장 높은 누적 승점이 승리합니다.',
     setupChoice,
-    choiceView,
+    choiceScreen,
     updateChoice,
     choiceBot,
   )
+
+  boards.choice.tick = advanceCards
+  boards.choice.botReady = (s, id, now) =>
+    !['vote', 'answer'].includes(s.phase) ||
+    now >= (s.dealtAt || 0) + 520 + ((id * 5 + s.round * 3) % 8) * 290
 
   const stones = ['홍옥', '비취', '남옥']
   function heavyStart(s) {
